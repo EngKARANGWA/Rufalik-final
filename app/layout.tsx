@@ -16,8 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="rw">
-      <body>
-        <AuthProvider>{children}</AuthProvider>
+      <head />
+      <body className="bg-white font-sans min-h-screen flex flex-col">
+        <AuthProvider>
+          <main className="flex-1 px-4 md:px-8 lg:px-16 py-4">{children}</main>
+        </AuthProvider>
       </body>
     </html>
   )

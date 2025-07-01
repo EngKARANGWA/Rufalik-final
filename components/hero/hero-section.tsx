@@ -56,9 +56,9 @@ export function HeroSection() {
         >
           <div className="flex h-full items-center justify-center text-center text-white">
             <div className="max-w-4xl px-4">
-              <h1 className="mb-4 text-4xl font-bold md:text-6xl animate-fade-in">{slide.title}</h1>
-              <p className="mb-6 text-xl md:text-2xl animate-fade-in-delay">{slide.subtitle}</p>
-              <p className="mb-8 text-lg opacity-90 animate-fade-in-delay-2">{slide.description}</p>
+              <h1 className="mb-4 text-5xl font-bold md:text-7xl animate-fade-in">{slide.title}</h1>
+              <p className="mb-6 text-2xl md:text-3xl animate-fade-in-delay">{slide.subtitle}</p>
+              <p className="mb-8 text-xl opacity-90 animate-fade-in-delay-2">{slide.description}</p>
               <Button size="lg" className="animate-fade-in-delay-3">
                 Tangira Gukoresha
               </Button>

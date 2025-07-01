@@ -83,7 +83,7 @@ export default function HomePage() {
 
       <main>
         {/* Hero Section */}
-        <section className="container py-8">
+        <section className="py-8">
           <HeroSection />
         </section>
 
@@ -92,16 +92,16 @@ export default function HomePage() {
           <div className="container">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg text-center">
-                <h3 className="font-bold text-lg mb-2">Serivisi za Leta</h3>
-                <p className="text-sm opacity-90">Shakisha serivisi zose za leta hano</p>
+                <h3 className="font-bold text-xl mb-2">Serivisi za Leta</h3>
+                <p className="text-base opacity-90">Shakisha serivisi zose za leta hano</p>
               </div>
               <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg text-center">
-                <h3 className="font-bold text-lg mb-2">Ubufasha</h3>
-                <p className="text-sm opacity-90">Saba ubufasha ku byo ukeneye</p>
+                <h3 className="font-bold text-xl mb-2">Ubufasha</h3>
+                <p className="text-base opacity-90">Saba ubufasha ku byo ukeneye</p>
               </div>
               <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-lg text-center">
-                <h3 className="font-bold text-lg mb-2">Ibitekerezo</h3>
-                <p className="text-sm opacity-90">Tanga ibitekerezo byawe</p>
+                <h3 className="font-bold text-xl mb-2">Ibitekerezo</h3>
+                <p className="text-base opacity-90">Tanga ibitekerezo byawe</p>
               </div>
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function HomePage() {
         <NewsTabs />
 
         {/* Search and Filter Section */}
-        <section className="container py-6">
+        <section className="py-6">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -142,7 +142,7 @@ export default function HomePage() {
         </section>
 
         {/* News Grid */}
-        <section className="container pb-12">
+        <section className="pb-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredNews.map((news) => (
               <NewsCard key={news.id} {...news} />

@@ -72,7 +72,7 @@ export default function UbukunguPage() {
       <Header />
       <NewsTabs />
 
-      <main className="container py-8">
+      <main className="px-4 md:px-8 lg:px-16 py-4">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">Amakuru y'Ubukungu</h1>
           <p className="text-muted-foreground text-lg">
