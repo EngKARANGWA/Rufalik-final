@@ -13,7 +13,7 @@ import { Search, Plus, Edit, Trash2, Eye } from "lucide-react"
 const newsData = [
   {
     id: 1,
-    title: "Inyubako nshya z'ibiro by'akarere zarangiye",
+    title: "Inyubako nshya z'ibiro by'umurenge zarangiye",
     category: "AMATANGAZO",
     author: "Admin",
     date: "2024-01-15",
@@ -67,7 +67,7 @@ export default function NewsManagementPage() {
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-3xl font-bold mb-2">Kuyobora Amakuru</h1>
-            <p className="text-muted-foreground">Kuyobora amakuru yose y'akarere</p>
+            <p className="text-muted-foreground">Kuyobora amakuru yose y'umurenge</p>
           </div>
           <Button>
             <Plus className="h-4 w-4 mr-2" />

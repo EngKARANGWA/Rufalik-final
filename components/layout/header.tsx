@@ -43,7 +43,7 @@ export function Header() {
             />
             <div className="flex flex-col">
               <span className="font-bold text-lg">Rugalika</span>
-              <span className="text-xs text-muted-foreground">Akarere ka Kamonyi</span>
+              <span className="text-xs text-muted-foreground">Umurenge wa Kamonyi</span>
             </div>
           </Link>
         </div>

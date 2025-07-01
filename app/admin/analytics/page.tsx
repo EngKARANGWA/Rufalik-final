@@ -43,7 +43,7 @@ export default function AnalyticsPage() {
   ]
 
   const topNews = [
-    { title: "Inyubako nshya z'ibiro by'akarere", views: 245, category: "AMATANGAZO" },
+    { title: "Inyubako nshya z'ibiro by'umurenge", views: 245, category: "AMATANGAZO" },
     { title: "Serivisi z'ubuzima ku bana", views: 189, category: "UBUZIMA" },
     { title: "Isoko rishya ry'imbuto", views: 156, category: "UBUKUNGU" },
     { title: "Umushinga w'amashuri", views: 134, category: "UBUREZI" },

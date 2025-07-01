@@ -14,11 +14,11 @@ import { Search, Filter } from "lucide-react"
 const sampleNews = [
   {
     id: 1,
-    title: "Inyubako nshya z'ibiro by'akarere za Rugalika zarangiye",
+    title: "Inyubako nshya z'ibiro by'umurenge wa Rugalika zarangiye",
     excerpt:
-      "Inyubako nshya z'ibiro by'akarere za Rugalika zarangiye kandi zizatangira gukoreshwa mu kwezi gutaha. Izi nyubako zizafasha mu gutanga serivisi nziza ku baturage.",
+      "Inyubako nshya z'ibiro by'umurenge wa Rugalika zarangiye kandi zizatangira gukoreshwa mu kwezi gutaha. Izi nyubako zizafasha mu gutanga serivisi nziza ku baturage.",
     category: "AMATANGAZO",
-    author: "Umuyobozi w'Akarere",
+    author: "Umuyobozi w'Umurenge",
     date: "2024-01-15",
     image: "/images/sector-office.jpeg",
     featured: true,
@@ -37,7 +37,7 @@ const sampleNews = [
     id: 3,
     title: "Isoko ry'imbuto n'amaboga ryagutse mu karere",
     excerpt:
-      "Akarere ka Rugalika kagize isoko rishya ry'imbuto n'amaboga rizafasha abaturage mu gucuruza no kubona ibicuruzwa byiza.",
+      "Umurenge wa Rugalika kagize isoko rishya ry'imbuto n'amaboga rizafasha abaturage mu gucuruza no kubona ibicuruzwa byiza.",
     category: "UBUKUNGU",
     author: "Jean Baptiste",
     date: "2024-01-13",
@@ -46,7 +46,7 @@ const sampleNews = [
   {
     id: 4,
     title: "Ubusabane bw'abaturage mu gusukura ibidukikije",
-    excerpt: "Abaturage b'akarere ka Rugalika bafatanije mu gusukura ibidukikije no kurinda ubwiza bw'akarere kabo.",
+    excerpt: "Abaturage b'umurenge wa Rugalika bafatanije mu gusukura ibidukikije no kurinda ubwiza bw'umurenge wabo.",
     category: "AMATANGAZO",
     author: "Umuyobozi w'Ibidukikije",
     date: "2024-01-12",

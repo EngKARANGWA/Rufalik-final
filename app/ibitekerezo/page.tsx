@@ -38,7 +38,7 @@ const sampleIdeas = [
     author: "Paul Kagame",
     date: "2024-01-13",
     title: "Guhindura imihanda",
-    content: "Imihanda y'akarere kacu ikeneye gusanwa no guhindurwa kugira ngo ikorere neza.",
+    content: "Imihanda y'umurenge wacu ikeneye gusanwa no guhindurwa kugira ngo ikorere neza.",
     likes: 31,
     comments: 12,
   },

@@ -11,11 +11,11 @@ import { Search } from "lucide-react"
 const announcementNews = [
   {
     id: 1,
-    title: "Inyubako nshya z'ibiro by'akarere zarangiye",
+    title: "Inyubako nshya z'ibiro by'umurenge wa Rugalika zarangiye",
     excerpt:
-      "Inyubako nshya z'ibiro by'akarere za Rugalika zarangiye kandi zizatangira gukoreshwa mu kwezi gutaha. Abaturage bashobora kuzasura kugira ngo babone serivisi zitandukanye.",
+      "Inyubako nshya z'ibiro by'umurenge wa Rugalika zarangiye kandi zizatangira gukoreshwa mu kwezi gutaha. Abaturage bashobora kuzasura kugira ngo babone serivisi zitandukanye.",
     category: "AMATANGAZO",
-    author: "Umuyobozi w'Akarere",
+    author: "Umuyobozi wa Rugalika",
     date: "2024-01-15",
     image: "/images/sector-office.jpeg",
     featured: true,
@@ -23,7 +23,7 @@ const announcementNews = [
   {
     id: 2,
     title: "Ubusabane bw'abaturage mu gusukura ibidukikije",
-    excerpt: "Abaturage b'akarere ka Rugalika bafatanije mu gusukura ibidukikije no kurinda ubwiza bw'akarere kabo.",
+    excerpt: "Abaturage b'umurenge wa Rugalika bafatanije mu gusukura ibidukikije no kurinda ubwiza bw'umurenge wabo.",
     category: "AMATANGAZO",
     author: "Umuyobozi w'Ibidukikije",
     date: "2024-01-14",
@@ -31,10 +31,10 @@ const announcementNews = [
   },
   {
     id: 3,
-    title: "Inama y'akarere izabera ku wa gatanu",
-    excerpt: "Inama y'akarere izabera ku wa gatanu tariki ya 25/01/2024 saa sita z'umugoroba mu biro by'akarere.",
+    title: "Inama y'umurenge izaba ku wa gatanu",
+    excerpt: "Inama y'umurenge izabera ku wa gatanu tariki ya 25/01/2024 saa sita z'umugoroba mu biro by'umurenge.",
     category: "AMATANGAZO",
-    author: "Umunyamabanga w'Akarere",
+    author: "Umunyamabanga w'Umurenge",
     date: "2024-01-13",
     image: "/images/modern-building.jpeg",
   },
@@ -65,7 +65,7 @@ export default function AmatangazoPage() {
       <main className="px-4 md:px-8 lg:px-16 py-4">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">Amatangazo</h1>
-          <p className="text-muted-foreground text-lg">Amatangazo yose y'akarere ka Rugalika</p>
+          <p className="text-muted-foreground text-lg">Amatangazo yose y'umurenge wa Rugalika</p>
         </div>
 
         {/* Search Section */}

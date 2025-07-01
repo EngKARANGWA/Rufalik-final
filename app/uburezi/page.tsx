@@ -11,9 +11,9 @@ import { Search } from "lucide-react"
 const educationNews = [
   {
     id: 1,
-    title: "Umushinga w'inyubako nshya z'ishuri mu karere",
+    title: "Umushinga w'inyubako nshya z'ishuri mu murenge",
     excerpt:
-      "Umushinga w'inyubako nshya z'ishuri mu karere ka Rugalika uzatangira mu kwezi gutaha. Uyu mushinga uzafasha abana benshi kubona amahirwe yo kwiga.",
+      "Umushinga w'inyubako nshya z'ishuri mu murenge wa Rugalika uzatangira mu kwezi gutaha. Uyu mushinga uzafasha abana benshi kubona amahirwe yo kwiga.",
     category: "UBUREZI",
     author: "Umuyobozi w'Uburezi",
     date: "2024-01-15",
@@ -23,7 +23,7 @@ const educationNews = [
   {
     id: 2,
     title: "Amahugurwa y'abarimu bashya yarangiye",
-    excerpt: "Akarere ka Rugalika karangije amahugurwa y'abarimu bashya bagamije kunoza ubushobozi bwabo mu kwigisha.",
+    excerpt: "Umurenge wa Rugalika karangije amahugurwa y'abarimu bashya bagamije kunoza ubushobozi bwabo mu kwigisha.",
     category: "UBUREZI",
     author: "Marie Claire",
     date: "2024-01-14",
@@ -32,7 +32,7 @@ const educationNews = [
   {
     id: 3,
     title: "Ibikoresho by'amashuri byongerewe",
-    excerpt: "Amashuri yose y'akarere yahawe ibikoresho bishya by'ubwiyigishe bizafasha mu kunoza uburezi.",
+    excerpt: "Amashuri yose y'umurenge yahawe ibikoresho bishya by'ubwiyigishe bizafasha mu kunoza uburezi.",
     category: "UBUREZI",
     author: "Paul Kagame",
     date: "2024-01-13",
@@ -65,7 +65,7 @@ export default function UbureziPage() {
       <main className="px-4 md:px-8 lg:px-16 py-4">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">Amakuru y'Uburezi</h1>
-          <p className="text-muted-foreground text-lg">Amakuru yose yerekeye uburezi mu karere ka Rugalika</p>
+          <p className="text-muted-foreground text-lg">Amakuru yose yerekeye uburezi mu murenge wa Rugalika</p>
         </div>
 
         {/* Search Section */}

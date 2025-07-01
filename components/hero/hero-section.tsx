@@ -10,13 +10,13 @@ export function HeroSection() {
   const slides = [
     {
       title: "Murakaza neza ku rubuga rwa Rugalika",
-      subtitle: "Habona amakuru yose y'akarere kacu",
+      subtitle: "Habona amakuru yose y'umurenge wacu",
       image: "/images/sector-office.jpeg",
-      description: "Koresha sisitemu yacu ngo ubone amakuru y'ingenzi y'akarere ka Rugalika",
+      description: "Koresha sisitemu yacu ngo ubone amakuru y'ingenzi y'umurenge wa Rugalika",
     },
     {
       title: "Serivisi z'Uburezi",
-      subtitle: "Amakuru y'uburezi mu karere ka Rugalika",
+      subtitle: "Amakuru y'uburezi mu Murenge wa Rugalika",
       image: "/images/development-project.jpeg",
       description: "Shakisha amakuru y'amashuri n'indi serivisi z'uburezi",
     },

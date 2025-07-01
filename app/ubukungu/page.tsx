@@ -13,7 +13,7 @@ const economyNews = [
     id: 1,
     title: "Isoko rishya ry'imbuto n'amaboga ryagutse",
     excerpt:
-      "Akarere ka Rugalika kagize isoko rishya ry'imbuto n'amaboga mu rwego rwo guteza imbere ubucuruzi bw'abaturage no kongera umusaruro w'ubuhinzi.",
+      "Umurenge wa Rugalika wagize isoko rishya ry'imbuto n'amaboga mu rwego rwo guteza imbere ubucuruzi bw'abaturage no kongera umusaruro w'ubuhinzi.",
     category: "UBUKUNGU",
     author: "Umuyobozi w'Ubucuruzi",
     date: "2024-01-15",
@@ -23,7 +23,7 @@ const economyNews = [
   {
     id: 2,
     title: "Amahugurwa y'ubucuruzi ku baturage",
-    excerpt: "Akarere gatangije amahugurwa y'ubucuruzi agamije guteza imbere ubushobozi bw'abaturage mu bucuruzi.",
+    excerpt: "Umurenge watangije amahugurwa y'ubucuruzi agamije guteza imbere ubushobozi bw'abaturage mu bucuruzi.",
     category: "UBUKUNGU",
     author: "Jean Baptiste",
     date: "2024-01-14",
@@ -42,7 +42,7 @@ const economyNews = [
   {
     id: 4,
     title: "Ubwiyunge bw'abaturage mu bucuruzi",
-    excerpt: "Abaturage b'akarere ka Rugalika bagiye bwiyongera mu bucuruzi bw'imbuto n'amaboga.",
+    excerpt: "Abaturage b'umurenge wa Rugalika bagiye bwiyongera mu bucuruzi bw'imbuto n'amaboga.",
     category: "UBUKUNGU",
     author: "Paul Kagame",
     date: "2024-01-12",

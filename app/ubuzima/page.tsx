@@ -23,7 +23,7 @@ const healthNews = [
   {
     id: 2,
     title: "Ubugenzuzi bw'ubuzima bw'abaturage",
-    excerpt: "Akarere ka Rugalika katangije gahunda y'ubugenzuzi bw'ubuzima bw'abaturage bose.",
+    excerpt: "Umurenge wa Rugalika watangije gahunda y'ubugenzuzi bw'ubuzima bw'abaturage bose.",
     category: "UBUZIMA",
     author: "Dr. Jean Baptiste",
     date: "2024-01-14",
@@ -32,7 +32,7 @@ const healthNews = [
   {
     id: 3,
     title: "Amahugurwa y'ubuzima ku baturage",
-    excerpt: "Abaturage b'akarere ka Rugalika bahawe amahugurwa ku bijyanye n'ubuzima n'isuku.",
+    excerpt: "Abaturage b'umurenge wa Rugalika bahawe amahugurwa ku bijyanye n'ubuzima n'isuku.",
     category: "UBUZIMA",
     author: "Nurse Paul",
     date: "2024-01-13",
@@ -65,7 +65,7 @@ export default function UbuzimaPage() {
       <main className="px-4 md:px-8 lg:px-16 py-4">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">Amakuru y'Ubuzima</h1>
-          <p className="text-muted-foreground text-lg">Amakuru yose yerekeye ubuzima n'ubuvuzi mu karere ka Rugalika</p>
+          <p className="text-muted-foreground text-lg">Amakuru yose yerekeye ubuzima n'ubuvuzi mu murenge wa Rugalika</p>
         </div>
 
         {/* Search Section */}
