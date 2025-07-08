@@ -9,8 +9,10 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Search, UserPlus, Edit, Trash2, Mail, Phone } from "lucide-react"
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
+import { AddUserForm } from "@/components/admin/add-user-form"
 
-const usersData = [
+const initialUsersData = [
   {
     id: 1,
     name: "Jean Baptiste Uwimana",
@@ -55,12 +57,40 @@ const usersData = [
 
 export default function UsersManagementPage() {
   const [searchTerm, setSearchTerm] = useState("")
+  const [usersData, setUsersData] = useState(initialUsersData)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [editUser, setEditUser] = useState<any | null>(null)
 
   const filteredUsers = usersData.filter(
     (user) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()),
   )
+
+  const handleUserAdded = (newUser: any) => {
+    if (editUser) {
+      setUsersData(prev => prev.map(u => u.id === newUser.id ? newUser : u))
+    } else {
+      setUsersData(prev => [newUser, ...prev])
+    }
+    setEditUser(null)
+  }
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false)
+    setEditUser(null)
+  }
+
+  const handleDeleteUser = (id: number) => {
+    if (window.confirm("Urashaka koko gusiba uyu mukoresha?")) {
+      setUsersData(prev => prev.filter(u => u.id !== id))
+    }
+  }
+
+  const handleEditUser = (user: any) => {
+    setEditUser(user)
+    setIsDialogOpen(true)
+  }
 
   return (
     <AdminLayout>
@@ -70,10 +100,21 @@ export default function UsersManagementPage() {
             <h1 className="text-3xl font-bold mb-2">Kuyobora Abaturage</h1>
             <p className="text-muted-foreground">Kuyobora abaturage bose bakoresha sisitemu</p>
           </div>
-          <Button>
-            <UserPlus className="h-4 w-4 mr-2" />
-            Ongeraho Umukoresha
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={() => { setEditUser(null) }}>
+                <UserPlus className="h-4 w-4 mr-2" />
+                Ongeraho Umukoresha
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <AddUserForm
+                onUserAdded={handleUserAdded}
+                onClose={handleCloseDialog}
+                user={editUser}
+              />
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Stats Cards */}
@@ -195,10 +236,10 @@ export default function UsersManagementPage() {
                     <TableCell className="text-sm">{user.lastLogin}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" onClick={() => handleEditUser(user)}>
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="text-red-600 hover:text-red-700">
+                        <Button variant="ghost" size="icon" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteUser(user.id)}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>

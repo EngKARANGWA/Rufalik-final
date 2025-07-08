@@ -22,6 +22,11 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import { useAuth } from "@/contexts/auth-context"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select"
 
 const menuItems = [
   {
@@ -35,7 +40,7 @@ const menuItems = [
     icon: FileText,
     submenu: [
       { title: "Byose", href: "/admin/news", icon: Eye },
-      { title: "Ongeraho", href: "/admin/news/add", icon: Plus },
+      { title: "Ongeraho", href: "/admin/news?add=1", icon: Plus },
       { title: "Kuyobora", href: "/admin/news/manage", icon: Edit },
     ],
   },

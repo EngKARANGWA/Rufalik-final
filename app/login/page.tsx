@@ -51,7 +51,7 @@ export default function LoginPage() {
       <Header />
 
       <main className="container py-8">
-        <div className="flex justify-center items-center min-h-[600px]">
+        <div className="flex justify-center items-center min-h-[600px] ml-2 sm:ml-8">
           <Card className="w-full max-w-md">
             <CardHeader className="text-center">
               <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-primary flex items-center justify-center">
@@ -70,7 +70,7 @@ export default function LoginPage() {
                     <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4">{info}</div>
                   )}
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email ya Admin</Label>
+                    <Label htmlFor="email" className="text-lg">Email ya Admin</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                       <Input
@@ -78,7 +78,7 @@ export default function LoginPage() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="pl-10"
+                        className="pl-10 text-lg py-3"
                         required
                       />
                     </div>
@@ -97,14 +97,14 @@ export default function LoginPage() {
                     <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4">{info}</div>
                   )}
                   <div className="space-y-2">
-                    <Label htmlFor="code">Injiza Kode Wahawe</Label>
+                    <Label htmlFor="code" className="text-lg">Injiza Kode Wahawe</Label>
                     <div className="relative">
                       <Input
                         id="code"
                         type="text"
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
-                        className="pl-3"
+                        className="pl-3 text-lg py-3"
                         required
                         maxLength={6}
                         pattern="[0-9]{6}"

@@ -9,6 +9,10 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, Plus, Edit, Trash2, Eye } from "lucide-react"
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
+import { AddNewsForm } from "@/components/admin/add-news-form"
+import { useSearchParams, useRouter } from "next/navigation"
+import React from "react"
 
 const newsData = [
   {
@@ -53,6 +57,28 @@ export default function NewsManagementPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedStatus, setSelectedStatus] = useState("all")
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const [open, setOpen] = useState(false)
+
+  // Open modal if ?add=1 is present
+  React.useEffect(() => {
+    if (searchParams.get("add") === "1") {
+      setOpen(true)
+    } else {
+      setOpen(false)
+    }
+  }, [searchParams])
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen)
+    if (!isOpen) {
+      // Remove ?add=1 from URL when modal closes
+      const params = new URLSearchParams(searchParams)
+      params.delete("add")
+      router.replace(`/admin/news${params.toString() ? `?${params}` : ""}`)
+    }
+  }
 
   const filteredNews = newsData.filter((news) => {
     const matchesSearch = news.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -69,10 +95,17 @@ export default function NewsManagementPage() {
             <h1 className="text-3xl font-bold mb-2">Kuyobora Amakuru</h1>
             <p className="text-muted-foreground">Kuyobora amakuru yose y'umurenge</p>
           </div>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Ongeraho Amakuru
-          </Button>
+          <Dialog open={open} onOpenChange={handleOpenChange}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Ongeraho Amakuru
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <AddNewsForm />
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Filters */}
