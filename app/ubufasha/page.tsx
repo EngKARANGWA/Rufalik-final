@@ -77,18 +77,42 @@ export default function UbufashaPage() {
   const [selectedDepartment, setSelectedDepartment] = useState("")
   const [formData, setFormData] = useState({
     names: "",
+    email: "",
     telephone: "",
     department: "",
     description: "",
   })
+  const [emailError, setEmailError] = useState("")
+
+  const validateEmail = (value: string) => {
+    if (!value) return "Email irakenewe."
+    if (!/^\S+@\S+\.\S+$/.test(value)) return "Shyiramo email nyayo."
+    return ""
+  }
+
+  const handleDepartmentChange = (value: string) => {
+    setFormData((prev) => {
+      let newEmail = prev.email
+      if (value === "Ubutaka") {
+        newEmail = "kararangwacyrille@gmail.com"
+      } else if (prev.department === "Ubutaka" && value !== "Ubutaka") {
+        newEmail = ""
+      }
+      return { ...prev, department: value, email: newEmail }
+    })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const err = validateEmail(formData.email)
+    setEmailError(err)
+    if (err) return
     // Here you would typically send the email to the department leader
     console.log("Form submitted:", formData)
     alert("Ubutumwa bwawe bwoherejwe neza! Tuzagusubiza vuba.")
     setIsModalOpen(false)
-    setFormData({ names: "", telephone: "", department: "", description: "" })
+    setFormData({ names: "", email: "", telephone: "", department: "", description: "" })
+    setEmailError("")
   }
 
   return (
@@ -181,7 +205,17 @@ export default function UbufashaPage() {
                             required
                           />
                         </div>
-
+                        <div className="space-y-2">
+                          <Label htmlFor="email">Email *</Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            required
+                          />
+                          {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
+                        </div>
                         <div className="space-y-2">
                           <Label htmlFor="telephone">Telefoni *</Label>
                           <Input
@@ -192,12 +226,11 @@ export default function UbufashaPage() {
                             required
                           />
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="department">Hitamo Ishami *</Label>
                           <Select
                             value={formData.department}
-                            onValueChange={(value) => setFormData({ ...formData, department: value })}
+                            onValueChange={handleDepartmentChange}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder="Hitamo ishami" />
@@ -214,7 +247,6 @@ export default function UbufashaPage() {
                             </SelectContent>
                           </Select>
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="description">Sobanura ubufasha ukeneye *</Label>
                           <Textarea
@@ -225,7 +257,6 @@ export default function UbufashaPage() {
                             required
                           />
                         </div>
-
                         <Button type="submit" className="w-full">
                           <Mail className="h-4 w-4 mr-2" />
                           Ohereza Ubutumwa

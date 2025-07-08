@@ -22,17 +22,20 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
   const router = useRouter()
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
   const [nationalId, setNationalId] = useState("")
   const [phone, setPhone] = useState("")
   const [mutualStatus, setMutualStatus] = useState(mutualStatuses[0].value)
   const [employmentStatus, setEmploymentStatus] = useState(employmentStatuses[0].value)
   const [loading, setLoading] = useState(false)
+  const [emailError, setEmailError] = useState("")
 
   useEffect(() => {
     if (user) {
       const nameParts = user.name ? user.name.split(" ") : ["", ""]
       setFirstName(nameParts[0] || "")
       setLastName(nameParts.slice(1).join(" ") || "")
+      setEmail(user.email || "")
       setNationalId(user.nationalId || "")
       setPhone(user.phone || "")
       setMutualStatus(user.mutualStatus || mutualStatuses[0].value)
@@ -40,6 +43,7 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
     } else {
       setFirstName("")
       setLastName("")
+      setEmail("")
       setNationalId("")
       setPhone("")
       setMutualStatus(mutualStatuses[0].value)
@@ -47,14 +51,24 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
     }
   }, [user])
 
+  const validateEmail = (value: string) => {
+    if (!value) return "Email irakenewe."
+    // Simple email regex
+    if (!/^\S+@\S+\.\S+$/.test(value)) return "Shyiramo email nyayo."
+    return ""
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const err = validateEmail(email)
+    setEmailError(err)
+    if (err) return
     setLoading(true)
     
     const newUser = {
       id: user?.id || Date.now(),
       name: `${firstName} ${lastName}`,
-      email: user?.email || `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`,
+      email: email,
       phone: phone,
       role: employmentStatus === "leader" ? "admin" : "citizen",
       status: "active",
@@ -64,7 +78,6 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
       mutualStatus: mutualStatus,
       employmentStatus: employmentStatus,
     }
-    
     // Simulate API call
     setTimeout(() => {
       setLoading(false)
@@ -105,7 +118,17 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
             />
           </div>
         </div>
-        
+        <div>
+          <label className="block mb-1 font-medium">Email</label>
+          <Input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Andika email"
+            required
+          />
+          {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
+        </div>
         <div>
           <label className="block mb-1 font-medium flex items-center gap-2">
             <CreditCard className="h-4 w-4" />
@@ -118,7 +141,6 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
             required
           />
         </div>
-        
         <div>
           <label className="block mb-1 font-medium flex items-center gap-2">
             <Phone className="h-4 w-4" />
@@ -131,7 +153,6 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
             required
           />
         </div>
-        
         <div>
           <label className="block mb-1 font-medium flex items-center gap-2">
             <Users className="h-4 w-4" />
@@ -150,7 +171,6 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
             </SelectContent>
           </Select>
         </div>
-        
         <div>
           <label className="block mb-1 font-medium">Uko akora</label>
           <Select value={employmentStatus} onValueChange={setEmploymentStatus}>
@@ -169,7 +189,6 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
             </SelectContent>
           </Select>
         </div>
-        
         <Button type="submit" disabled={loading} className="w-full">
           {loading ? (user ? "Kohereza..." : "Kohereza...") : (user ? "Hindura Umuturage" : "Ohereza Umuturage")}
         </Button>
