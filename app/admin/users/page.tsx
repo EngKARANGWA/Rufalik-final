@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Search, UserPlus, Edit, Trash2, Mail, Phone } from "lucide-react"
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog"
 import { AddUserForm } from "@/components/admin/add-user-form"
 
 const initialUsersData = [
@@ -108,6 +108,7 @@ export default function UsersManagementPage() {
               </Button>
             </DialogTrigger>
             <DialogContent>
+              <DialogTitle>{editUser ? "Hindura Umukoresha" : "Ongeraho Umukoresha"}</DialogTitle>
               <AddUserForm
                 onUserAdded={handleUserAdded}
                 onClose={handleCloseDialog}

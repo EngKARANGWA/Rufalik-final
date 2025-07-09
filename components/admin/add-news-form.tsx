@@ -1,13 +1,14 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Image as ImageIcon, Video as VideoIcon, FileText, Trash2, Plus } from "lucide-react"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog"
+import React from "react"
 
 const categories = [
   { label: "Ubukungu", value: "ubukungu" },
@@ -16,7 +17,7 @@ const categories = [
   { label: "Amatangazo", value: "amatangazo" },
 ]
 
-export function AddNewsForm() {
+export function AddNewsForm({ news, onNewsSaved, onClose }: { news?: any, onNewsSaved?: (news: any) => void, onClose?: () => void }) {
   const router = useRouter()
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
@@ -24,7 +25,24 @@ export function AddNewsForm() {
   const [media, setMedia] = useState<File[]>([])
   const [mediaExplanations, setMediaExplanations] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (news) {
+      setTitle(news.title || "")
+      setContent(news.content || "")
+      setCategory(news.category || categories[0].value)
+      // For simplicity, editing does not prefill media
+      setMedia(news.files?.map((f: any) => f.file) || [])
+      setMediaExplanations(news.files?.map((f: any) => f.explanation) || [])
+    } else {
+      setTitle("")
+      setContent("")
+      setCategory(categories[0].value)
+      setMedia([])
+      setMediaExplanations([])
+    }
+  }, [news])
 
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -58,25 +76,34 @@ export function AddNewsForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    const formData = new FormData()
-    formData.append("title", title)
-    formData.append("content", content)
-    formData.append("category", category)
-    media.forEach((file, idx) => {
-      formData.append("media", file)
-      formData.append(`mediaExplanation_${idx}`, mediaExplanations[idx] || "")
-    })
-    // Simulate API call
+    const newNews = {
+      id: news?.id || Date.now(),
+      title,
+      content,
+      category,
+      author: news?.author || "Admin",
+      date: news?.date || new Date().toISOString().split('T')[0],
+      status: news?.status || "published",
+      views: news?.views || 0,
+      files: media.map((file, idx) => ({
+        file,
+        explanation: mediaExplanations[idx] || "",
+        url: URL.createObjectURL(file),
+        type: file.type,
+        name: file.name,
+      })),
+    }
     setTimeout(() => {
       setLoading(false)
-      alert("News added successfully! (Simulated)")
-      router.push("/admin/news")
+      if (onNewsSaved) onNewsSaved(newNews)
+      if (onClose) onClose()
+      alert(news ? "Inkuru yahinduwe neza!" : "Inkuru yongeyeho neza!")
     }, 1000)
   }
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-card rounded shadow mt-8">
-      <h1 className="text-2xl font-bold mb-4">Ongeraho Inkuru</h1>
+      <h1 className="text-2xl font-bold mb-4">{news ? "Hindura Inkuru" : "Ongeraho Inkuru"}</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block mb-1 font-medium">Ikiciro</label>
@@ -166,7 +193,7 @@ export function AddNewsForm() {
           )}
         </div>
         <Button type="submit" disabled={loading} className="w-full">
-          {loading ? "Kohereza..." : "Ohereza Inkuru"}
+          {loading ? (news ? "Kohereza..." : "Kohereza...") : (news ? "Hindura Inkuru" : "Ohereza Inkuru")}
         </Button>
       </form>
     </div>
@@ -183,6 +210,7 @@ export function AddNewsDialog() {
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogTitle>Ongeraho Amakuru</DialogTitle>
         <AddNewsForm />
       </DialogContent>
     </Dialog>
