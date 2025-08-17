@@ -71,8 +71,14 @@ const menuItems = [
   },
 ]
 
-export function AdminSidebar() {
-  const [collapsed, setCollapsed] = useState(false)
+interface AdminSidebarProps {
+  collapsed?: boolean
+  onToggleCollapse?: () => void
+  isMobileOpen?: boolean
+  onMobileClose?: () => void
+}
+
+export function AdminSidebar({ collapsed = false, onToggleCollapse, isMobileOpen = false, onMobileClose }: AdminSidebarProps) {
   const [expandedItems, setExpandedItems] = useState<string[]>([])
   const pathname = usePathname()
   const router = useRouter()
@@ -83,15 +89,39 @@ export function AdminSidebar() {
     router.push("/")
   }
 
+  const handleNavigation = (href: string) => {
+    router.push(href)
+    // Close mobile sidebar after navigation
+    if (onMobileClose) {
+      onMobileClose()
+    }
+  }
+
   const toggleExpanded = (title: string) => {
     setExpandedItems((prev) => (prev.includes(title) ? prev.filter((item) => item !== title) : [...prev, title]))
   }
 
   return (
-    <div
-      className={`bg-card border-r transition-all duration-300 ${collapsed ? "w-16" : "w-64"} flex flex-col h-screen`}
-    >
-      {/* Header */}
+    <>
+      {/* Mobile Overlay */}
+      {isMobileOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={onMobileClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div
+        className={`
+          bg-card border-r transition-all duration-300 flex flex-col h-screen z-50
+          md:relative md:translate-x-0
+          ${isMobileOpen ? 'fixed translate-x-0' : 'fixed -translate-x-full md:translate-x-0'}
+          ${collapsed ? "md:w-16" : "md:w-64"}
+          w-64
+        `}
+      >
+      {/* Header with Logo */}
       <div className="p-4 border-b">
         <div className="flex items-center justify-between">
           {!collapsed && (
@@ -109,43 +139,49 @@ export function AdminSidebar() {
               </div>
             </div>
           )}
-          <Button variant="ghost" size="icon" onClick={() => setCollapsed(!collapsed)} className="h-8 w-8">
-            {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          {collapsed && (
+            <div className="flex justify-center w-full">
+              <Image
+                src="/images/rugalika-logo.png"
+                alt="Rugalika Logo"
+                width={32}
+                height={32}
+                className="rounded-full"
+              />
+            </div>
+          )}
+          {/* Mobile close button */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onMobileClose}
+            className="h-8 w-8 md:hidden"
+          >
+            <ChevronLeft className="h-4 w-4" />
           </Button>
+          
+          {/* Desktop toggle button */}
+          {onToggleCollapse && (
+            <Button variant="ghost" size="icon" onClick={onToggleCollapse} className="h-8 w-8 ml-auto hidden md:flex">
+              {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            </Button>
+          )}
         </div>
       </div>
 
-      {/* User Info */}
-      {!collapsed && (
-        <div className="p-4 border-b">
-          <div className="flex items-center space-x-3">
-            <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground text-sm font-medium">{user?.username.charAt(0)}</span>
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium">{user?.username}</p>
-              <p className="text-xs text-muted-foreground">Umuyobozi</p>
-            </div>
-            <Button variant="ghost" size="icon" className="h-6 w-6">
-              <Bell className="h-3 w-3" />
-            </Button>
-          </div>
-        </div>
-      )}
-
       {/* Navigation */}
-      <ScrollArea className="flex-1 px-3 py-4">
-        <nav className="space-y-2">
+      <ScrollArea className="flex-1 px-4 py-6">
+        <nav className="space-y-1">
           {menuItems.map((item) => (
             <div key={item.title}>
               <Button
                 variant={pathname === item.href ? "secondary" : "ghost"}
-                className={`w-full justify-start ${collapsed ? "px-2" : "px-3"}`}
+                className={`w-full justify-start h-10 ${collapsed ? "px-2" : "px-3"} mb-1`}
                 onClick={() => {
                   if (item.submenu) {
                     toggleExpanded(item.title)
                   } else {
-                    router.push(item.href)
+                    handleNavigation(item.href)
                   }
                 }}
               >
@@ -166,14 +202,14 @@ export function AdminSidebar() {
 
               {/* Submenu */}
               {item.submenu && !collapsed && expandedItems.includes(item.title) && (
-                <div className="ml-6 mt-2 space-y-1">
+                <div className="ml-8 mt-1 space-y-1 pb-2">
                   {item.submenu.map((subItem) => (
                     <Button
                       key={subItem.href}
                       variant={pathname === subItem.href ? "secondary" : "ghost"}
                       size="sm"
-                      className="w-full justify-start"
-                      onClick={() => router.push(subItem.href)}
+                      className="w-full justify-start h-8 text-sm"
+                      onClick={() => handleNavigation(subItem.href)}
                     >
                       <subItem.icon className="h-3 w-3 mr-2" />
                       {subItem.title}
@@ -186,17 +222,31 @@ export function AdminSidebar() {
         </nav>
       </ScrollArea>
 
-      {/* Footer */}
-      <div className="p-3 border-t">
+      {/* User Info & Footer */}
+      <div className="p-4 border-t bg-muted/30">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="h-10 w-10 rounded-full bg-slate-600 flex items-center justify-center">
+            <span className="text-white text-sm font-medium">{user?.username?.charAt(0) || 'N'}</span>
+          </div>
+          {!collapsed && (
+            <div className="flex-1">
+              <p className="text-sm font-medium">{user?.username || 'Admin'}</p>
+              <p className="text-xs text-muted-foreground">Umuyobozi</p>
+            </div>
+          )}
+        </div>
+        
+        {/* Logout Button */}
         <Button
           variant="ghost"
-          className={`w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 ${collapsed ? "px-2" : "px-3"}`}
+          className={`w-full justify-start h-10 text-red-600 hover:text-red-700 hover:bg-red-50 ${collapsed ? "px-2" : "px-3"}`}
           onClick={handleLogout}
         >
           <LogOut className={`h-4 w-4 ${collapsed ? "" : "mr-2"}`} />
           {!collapsed && "Gusohoka"}
         </Button>
       </div>
-    </div>
+      </div>
+    </>
   )
 }

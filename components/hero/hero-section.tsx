@@ -17,13 +17,13 @@ export function HeroSection() {
     {
       title: "Serivisi z'Uburezi",
       subtitle: "Amakuru y'uburezi mu Murenge wa Rugalika",
-      image: "/images/development-project.jpeg",
+      image: "/images/rugalika2.webp",
       description: "Shakisha amakuru y'amashuri n'indi serivisi z'uburezi",
     },
     {
       title: "Ubuzima bw'Abaturage",
       subtitle: "Serivisi z'ubuzima zirahari",
-      image: "/images/healthcare-child.jpeg",
+      image: "/images/youth.png",
       description: "Menya aho usanga serivisi z'ubuzima mu karere kacu",
     },
   ]
@@ -44,9 +44,7 @@ export function HeroSection() {
   }
 
   return (
-    <div className="relative h-[500px] overflow-hidden rounded-lg bg-gradient-to-r from-blue-600 to-green-600">
-      <div className="absolute inset-0 bg-black/20" />
-
+    <div className="relative h-[500px] overflow-hidden rounded-lg">
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -54,12 +52,24 @@ export function HeroSection() {
             index === currentSlide ? "opacity-100" : "opacity-0"
           }`}
         >
-          <div className="flex h-full items-center justify-center text-center text-white">
+          {/* Background Image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url(${slide.image})`,
+            }}
+          />
+          
+          {/* Transparent Color Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/70 to-green-600/70" />
+          
+          {/* Content */}
+          <div className="relative flex h-full items-center justify-center text-center text-white z-10">
             <div className="max-w-4xl px-4">
-              <h1 className="mb-4 text-5xl font-bold md:text-7xl animate-fade-in">{slide.title}</h1>
-              <p className="mb-6 text-2xl md:text-3xl animate-fade-in-delay">{slide.subtitle}</p>
-              <p className="mb-8 text-xl opacity-90 animate-fade-in-delay-2">{slide.description}</p>
-              <Button size="lg" className="animate-fade-in-delay-3">
+              <h1 className="mb-4 text-5xl font-bold md:text-7xl animate-fade-in drop-shadow-lg">{slide.title}</h1>
+              <p className="mb-6 text-2xl md:text-3xl animate-fade-in-delay drop-shadow-md">{slide.subtitle}</p>
+              <p className="mb-8 text-xl opacity-90 animate-fade-in-delay-2 drop-shadow-md">{slide.description}</p>
+              <Button size="lg" className="animate-fade-in-delay-3 shadow-lg">
                 Tangira Gukoresha
               </Button>
             </div>

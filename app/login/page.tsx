@@ -122,7 +122,7 @@ export default function LoginPage() {
               )}
               <div className="mt-6 text-center">
                 <p className="text-sm text-muted-foreground">
-                  Ufite ikibazo? Hamagara: <strong>0788123456</strong>
+                  Ufite ikibazo? Hamagara: <strong>0781430333</strong>
                 </p>
               </div>
             </CardContent>
