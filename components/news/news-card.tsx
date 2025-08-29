@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, User } from "lucide-react"
+import { Calendar, User, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 interface NewsCardProps {
+  id: number
   title: string
   excerpt: string
   category: string
@@ -13,7 +15,9 @@ interface NewsCardProps {
   featured?: boolean
 }
 
-export function NewsCard({ title, excerpt, category, author, date, image, featured = false }: NewsCardProps) {
+export function NewsCard({ id, title, excerpt, category, author, date, image, featured = false }: NewsCardProps) {
+  const router = useRouter()
+  
   const categoryColors = {
     UBUREZI: "bg-blue-100 text-blue-800",
     UBUKUNGU: "bg-green-100 text-green-800",
@@ -21,8 +25,15 @@ export function NewsCard({ title, excerpt, category, author, date, image, featur
     AMATANGAZO: "bg-purple-100 text-purple-800",
   }
 
+  const handleClick = () => {
+    router.push(`/news/${id}`)
+  }
+
   return (
-    <Card className={`overflow-hidden transition-all hover:shadow-lg ${featured ? "md:col-span-2" : ""}`}>
+    <Card 
+      className={`overflow-hidden transition-all hover:shadow-lg cursor-pointer group ${featured ? "md:col-span-2" : ""}`}
+      onClick={handleClick}
+    >
       <div className="relative">
         <Image
           src={image || "/placeholder.svg"}
@@ -43,14 +54,17 @@ export function NewsCard({ title, excerpt, category, author, date, image, featur
       <CardContent>
         <p className="text-muted-foreground mb-4 line-clamp-3">{excerpt}</p>
         <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <div className="flex items-center gap-1">
-            <User className="h-4 w-4" />
-            <span>{author}</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1">
+              <User className="h-4 w-4" />
+              <span>{author}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Calendar className="h-4 w-4" />
+              <span>{date}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <Calendar className="h-4 w-4" />
-            <span>{date}</span>
-          </div>
+          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </div>
       </CardContent>
     </Card>

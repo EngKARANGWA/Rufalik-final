@@ -10,38 +10,63 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, Filter } from "lucide-react"
 
-// Sample news data
+// Extended news data with sub-contents
 const sampleNews = [
   {
     id: 1,
     title: "Inyubako nshya z'ibiro by'umurenge wa Rugalika zarangiye",
-    excerpt:
-      "Inyubako nshya z'ibiro by'umurenge wa Rugalika zarangiye kandi zizatangira gukoreshwa mu kwezi gutaha. Izi nyubako zizafasha mu gutanga serivisi nziza ku baturage.",
+    excerpt: "Inyubako nshya z'ibiro by'umurenge wa Rugalika zarangiye kandi zizatangira gukoreshwa mu kwezi gutaha. Izi nyubako zizafasha mu gutanga serivisi nziza ku baturage.",
     category: "AMATANGAZO",
     author: "Umuyobozi w'Umurenge",
     date: "2024-01-15",
     image: "/images/sector-office.jpeg",
     featured: true,
+    mainContent: `Inyubako nshya z'ibiro by'umurenge wa Rugalika zarangiye nyuma y'igihe cy'amezi atatu y'ubwubatsi. 
+      Izi nyubako zubatswe hakurikijwe ibisabwa by'iki gihe kandi zizatanga serivisi nziza ku baturage.`,
+    subContents: [
+      {
+        id: 1,
+        title: "Ibishusho by'inyubako nshya",
+        content: "Reba ibishusho byerekana inyubako nshya z'ibiro by'umurenge",
+        image: "/images/sector-office.jpeg",
+        type: "image"
+      },
+      {
+        id: 2,
+        title: "Serivisi zitangwa",
+        content: "Izi nyubako nshya zizatanga serivisi zikurikira:\n• Serivisi z'ubunyangamugayo\n• Serivisi z'irangamimerere\n• Serivisi z'ubucuruzi",
+        type: "text"
+      }
+    ]
   },
   {
     id: 2,
     title: "Serivisi z'ubuzima ku bana ziyongerewe mu karere",
-    excerpt:
-      "Ikigo cy'ubuzima cya Rugalika cyatangije serivisi nshya z'ubuvuzi bw'abana n'inkurukurikirana y'ubuzima bwabo.",
+    excerpt: "Ikigo cy'ubuzima cya Rugalika cyatangije serivisi nshya z'ubuvuzi bw'abana n'inkurukurikirana y'ubuzima bwabo.",
     category: "UBUZIMA",
     author: "Dr. Marie Claire",
     date: "2024-01-14",
     image: "/images/healthcare-child.jpeg",
+    mainContent: "Ikigo cy'ubuzima cya Rugalika cyatangije serivisi nshya z'ubuvuzi bw'abana n'inkurukurikirana y'ubuzima bwabo.",
+    subContents: [
+      {
+        id: 1,
+        title: "Abaganga b'inzobere",
+        content: "Abaganga bashya b'inzobere mu buvuzi bw'abana bazatanga ubuvuzi bwiza",
+        type: "text"
+      }
+    ]
   },
   {
     id: 3,
     title: "Isoko ry'imbuto n'amaboga ryagutse mu karere",
-    excerpt:
-      "Umurenge wa Rugalika kagize isoko rishya ry'imbuto n'amaboga rizafasha abaturage mu gucuruza no kubona ibicuruzwa byiza.",
+    excerpt: "Umurenge wa Rugalika kagize isoko rishya ry'imbuto n'amaboga rizafasha abaturage mu gucuruza no kubona ibicuruzwa byiza.",
     category: "UBUKUNGU",
     author: "Jean Baptiste",
     date: "2024-01-13",
     image: "/images/fruit-market.jpeg",
+    mainContent: "Umurenge wa Rugalika kagize isoko rishya ry'imbuto n'amaboga rizafasha abaturage mu gucuruza no kubona ibicuruzwa byiza.",
+    subContents: []
   },
   {
     id: 4,
@@ -51,6 +76,8 @@ const sampleNews = [
     author: "Umuyobozi w'Ibidukikije",
     date: "2024-01-12",
     image: "/images/community-cleanup.jpeg",
+    mainContent: "Abaturage b'umurenge wa Rugalika bafatanije mu gusukura ibidukikije no kurinda ubwiza bw'umurenge wabo.",
+    subContents: []
   },
 ]
 
@@ -145,7 +172,17 @@ export default function HomePage() {
         <section className="pb-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredNews.map((news) => (
-              <NewsCard key={news.id} {...news} />
+              <NewsCard 
+                key={news.id} 
+                id={news.id}
+                title={news.title}
+                excerpt={news.excerpt}
+                category={news.category}
+                author={news.author}
+                date={news.date}
+                image={news.image}
+                featured={news.featured}
+              />
             ))}
           </div>
 

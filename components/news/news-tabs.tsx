@@ -2,16 +2,17 @@
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useRouter, usePathname } from "next/navigation"
+import { Home, GraduationCap, Briefcase, Heart } from "lucide-react"
 
 export function NewsTabs() {
   const router = useRouter()
   const pathname = usePathname()
 
   const tabs = [
-    { value: "/", label: "Byose", icon: "📰" },
-    { value: "/uburezi", label: "Uburezi", icon: "📚" },
-    { value: "/ubukungu", label: "Ubukungu", icon: "💼" },
-    { value: "/ubuzima", label: "Ubuzima", icon: "🏥" },
+    { value: "/", label: "Byose", icon: Home },
+    { value: "/uburezi", label: "Uburezi", icon: GraduationCap },
+    { value: "/ubukungu", label: "Ubukungu", icon: Briefcase },
+    { value: "/ubuzima", label: "Ubuzima", icon: Heart },
   ]
 
   return (
@@ -19,12 +20,15 @@ export function NewsTabs() {
       <div className="container">
         <Tabs value={pathname} onValueChange={(value) => router.push(value)}>
           <TabsList className="grid w-full grid-cols-4 lg:w-[600px] mx-auto">
-            {tabs.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-2">
-                <span>{tab.icon}</span>
-                <span className="hidden sm:inline">{tab.label}</span>
-              </TabsTrigger>
-            ))}
+            {tabs.map((tab) => {
+              const IconComponent = tab.icon
+              return (
+                <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-2">
+                  <IconComponent className="h-4 w-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </TabsTrigger>
+              )
+            })}
           </TabsList>
         </Tabs>
       </div>

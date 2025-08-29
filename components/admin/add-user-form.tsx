@@ -29,6 +29,7 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
   const [employmentStatus, setEmploymentStatus] = useState(employmentStatuses[0].value)
   const [loading, setLoading] = useState(false)
   const [emailError, setEmailError] = useState("")
+  const [nationalIdError, setNationalIdError] = useState("")
 
   useEffect(() => {
     if (user) {
@@ -58,37 +59,93 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
     return ""
   }
 
+  const validateNationalId = (value: string) => {
+    if (!value) return "National ID irakenewe."
+    if (value.length !== 16) return "National ID igomba kuba inyuguti 16."
+    if (!/^\d{16}$/.test(value)) return "National ID igomba kuba imibare gusa."
+    return ""
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const err = validateEmail(email)
-    setEmailError(err)
-    if (err) return
+    
+    // Validate email
+    const emailErr = validateEmail(email)
+    setEmailError(emailErr)
+    
+    // Validate National ID
+    const nationalIdErr = validateNationalId(nationalId)
+    setNationalIdError(nationalIdErr)
+    
+    if (emailErr || nationalIdErr) return
     setLoading(true)
     
-    const newUser = {
-      id: user?.id || Date.now(),
-      name: `${firstName} ${lastName}`,
-      email: email,
-      phone: phone,
-      role: employmentStatus === "leader" ? "admin" : "citizen",
-      status: "active",
-      joinDate: user?.joinDate || new Date().toISOString().split('T')[0],
-      lastLogin: user?.lastLogin || new Date().toISOString().split('T')[0],
-      nationalId: nationalId,
-      mutualStatus: mutualStatus,
-      employmentStatus: employmentStatus,
-    }
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const userData = {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        role: employmentStatus === "leader" ? "admin" : "citizen",
+        phone: phone,
+        nationalId: nationalId,
+        employmentStatus: employmentStatus
+      }
+
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        const newUser = {
+          id: user?.id || Date.now(),
+          name: `${firstName} ${lastName}`,
+          email: email,
+          phone: phone,
+          role: employmentStatus === "leader" ? "admin" : "citizen",
+          status: "active",
+          joinDate: user?.joinDate || new Date().toISOString().split('T')[0],
+          lastLogin: user?.lastLogin || new Date().toISOString().split('T')[0],
+          nationalId: nationalId,
+          mutualStatus: mutualStatus,
+          employmentStatus: employmentStatus,
+        }
+        
+        if (onUserAdded) {
+          onUserAdded(newUser)
+        }
+        if (onClose) {
+          onClose()
+        }
+        alert(user ? "Umuturage yahinduwe neza!" : "Umuturage yongeyeho neza!")
+             } else {
+         // Handle validation errors
+         if (data.errors && data.errors.length > 0) {
+           const errorMessages = data.errors.map((error: any) => `${error.field}: ${error.message}`).join('\n')
+           alert(`Hari amakosa:\n${errorMessages}`)
+         } else if (data.message) {
+           // Handle specific error messages like "nationalId already exists"
+           if (data.message.includes("nationalId already exists")) {
+             alert("National ID iyo yarashyizwemo. Koresha National ID indi.")
+             setNationalId("") // Clear the national ID field
+           } else {
+             alert(data.message)
+           }
+         } else {
+           alert("Hari ikibazo cyo kohereza umuturage")
+         }
+       }
+    } catch (error) {
+      console.error('Error creating user:', error)
+      alert("Hari ikibazo cyo kohereza umuturage. Ongera ugerageze.")
+    } finally {
       setLoading(false)
-      if (onUserAdded) {
-        onUserAdded(newUser)
-      }
-      if (onClose) {
-        onClose()
-      }
-      alert(user ? "Umuturage yahinduwe neza!" : "Umuturage yongeyeho neza!")
-    }, 1000)
+    }
   }
 
   return (
@@ -129,18 +186,25 @@ export function AddUserForm({ onUserAdded, onClose, user }: { onUserAdded?: (use
           />
           {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
         </div>
-        <div>
-          <label className="block mb-1 font-medium flex items-center gap-2">
-            <CreditCard className="h-4 w-4" />
-            National ID
-          </label>
-          <Input
-            value={nationalId}
-            onChange={(e) => setNationalId(e.target.value)}
-            placeholder="Andika National ID"
-            required
-          />
-        </div>
+                 <div>
+           <label className="block mb-1 font-medium flex items-center gap-2">
+             <CreditCard className="h-4 w-4" />
+             National ID
+           </label>
+           <Input
+             value={nationalId}
+             onChange={(e) => {
+               const value = e.target.value.replace(/\D/g, '').slice(0, 16) // Only allow digits, max 16
+               setNationalId(value)
+               setNationalIdError("") // Clear error when user types
+             }}
+             placeholder="Andika National ID (16 imibare)"
+             required
+             maxLength={16}
+             pattern="[0-9]{16}"
+           />
+           {nationalIdError && <p className="text-xs text-red-600 mt-1">{nationalIdError}</p>}
+         </div>
         <div>
           <label className="block mb-1 font-medium flex items-center gap-2">
             <Phone className="h-4 w-4" />

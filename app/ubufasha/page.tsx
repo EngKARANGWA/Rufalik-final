@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Phone, Mail, MapPin, HelpCircle, Beef, Trees, Mountain, Users, Home, Apple } from "lucide-react"
+import { Phone, Mail, MapPin, HelpCircle, Beef, Trees, Mountain, Users, Home, Apple, Heart } from "lucide-react"
 
 const departments = [
   {
@@ -21,8 +21,7 @@ const departments = [
     contact: "0788123456",
     email: "amatungo@rugalika.gov.rw",
     services: ["Guvura amatungo", "Inama z'ubworozi", "Gukurikirana ubuzima bw'amatungo"],
-    icon: "🐄",
-    iconComponent: "Beef",
+    iconComponent: Beef,
   },
   {
     name: "Amashyamba",
@@ -30,8 +29,7 @@ const departments = [
     contact: "0788123457",
     email: "amashyamba@rugalika.gov.rw",
     services: ["Kurinda amashyamba", "Gutera ibiti", "Inama z'ibidukikije"],
-    icon: "🌳",
-    iconComponent: "Trees",
+    iconComponent: Trees,
   },
   {
     name: "Ubutaka",
@@ -39,8 +37,7 @@ const departments = [
     contact: "0788123458",
     email: "ubutaka@rugalika.gov.rw",
     services: ["Kwandikisha ubutaka", "Gukemura amakimbirane y'ubutaka", "Gutanga impapuro z'ubutaka"],
-    icon: "🏞️",
-    iconComponent: "Mountain",
+    iconComponent: Mountain,
   },
   {
     name: "Irangamimerere",
@@ -48,8 +45,7 @@ const departments = [
     contact: "0788123459",
     email: "irangamimerere@rugalika.gov.rw",
     services: ["Gushyigikira abagore", "Amahugurwa y'uburinganire", "Kurwanya ubugizi bwa nabi"],
-    icon: "👥",
-    iconComponent: "Users",
+    iconComponent: Users,
   },
   {
     name: "Imibereho Myiza",
@@ -57,9 +53,7 @@ const departments = [
     contact: "0788123460",
     email: "imibereho@rugalika.gov.rw",
     services: ["Guteza imbere imibereho", "Amahugurwa y'ubuzima", "Serivisi z'imibereho myiza"],
-    icon: "🥗",
-    
-    iconComponent: "Home",
+    iconComponent: Heart,
   },
   {
     name: "Imiturire",
@@ -67,8 +61,7 @@ const departments = [
     contact: "0788123461",
     email: "imiturire@rugalika.gov.rw",
     services: ["Inama z'intungamubiri", "Gukurikirana imirire y'abana", "Amahugurwa y'imirire myiza"],
-    icon: "🏠",
-    iconComponent: "Apple",
+    iconComponent:Home,
   },
 ]
 
@@ -130,15 +123,7 @@ export default function UbufashaPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {departments.map((dept, index) => {
-            const IconComponent =
-              {
-                Beef,
-                Trees,
-                Mountain,
-                Users,
-                Home,
-                Apple,
-              }[dept.iconComponent] || HelpCircle
+            const IconComponent = dept.iconComponent
 
             return (
               <Card key={index} className="hover:shadow-lg transition-shadow">
@@ -149,7 +134,6 @@ export default function UbufashaPage() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span>{dept.icon}</span>
                         <span>{dept.name}</span>
                       </div>
                     </div>
@@ -236,14 +220,17 @@ export default function UbufashaPage() {
                               <SelectValue placeholder="Hitamo ishami" />
                             </SelectTrigger>
                             <SelectContent>
-                              {departments.map((dept, idx) => (
-                                <SelectItem key={idx} value={dept.name}>
-                                  <div className="flex items-center gap-2">
-                                    <span>{dept.icon}</span>
-                                    <span>{dept.name}</span>
-                                  </div>
-                                </SelectItem>
-                              ))}
+                              {departments.map((dept, idx) => {
+                                const IconComponent = dept.iconComponent
+                                return (
+                                  <SelectItem key={idx} value={dept.name}>
+                                    <div className="flex items-center gap-2">
+                                      <IconComponent className="h-4 w-4" />
+                                      <span>{dept.name}</span>
+                                    </div>
+                                  </SelectItem>
+                                )
+                              })}
                             </SelectContent>
                           </Select>
                         </div>

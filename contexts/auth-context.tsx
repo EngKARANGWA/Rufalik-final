@@ -9,7 +9,7 @@ interface AuthContextType {
   isAdmin: boolean
   user: { username: string; role: string } | null
   sendLoginCode: (email: string) => boolean
-  verifyLoginCode: (email: string, code: string) => boolean
+  verifyLoginCode: (email: string, code: string) => Promise<boolean>
   logout: () => void
 }
 
@@ -51,24 +51,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   // Verify the code entered by the user
-  const verifyLoginCode = (email: string, code: string): boolean => {
-    if (
-      email === "karangwacyrille@gmail.com" &&
-      loginCode &&
-      code === loginCode &&
-      codeSentAt &&
-      Date.now() - codeSentAt < 5 * 60 * 1000 // 5 minutes expiry
-    ) {
-      const userData = { username: "Admin", role: "admin" }
-      setUser(userData)
-      setIsAuthenticated(true)
-      setIsAdmin(true)
-      localStorage.setItem("rugalika_user", JSON.stringify(userData))
-      setLoginCode(null)
-      setCodeSentAt(null)
-      return true
+  const verifyLoginCode = async (email: string, code: string): Promise<boolean> => {
+    try {
+      const response = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          code: code  // Using 'code' instead of 'otp' as expected by backend
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        const userData = { username: "Admin", role: "admin" }
+        setUser(userData)
+        setIsAuthenticated(true)
+        setIsAdmin(true)
+        localStorage.setItem("rugalika_user", JSON.stringify(userData))
+        setLoginCode(null)
+        setCodeSentAt(null)
+        return true
+      } else {
+        console.error('Verification failed:', data.message)
+        return false
+      }
+    } catch (error) {
+      console.error('Error verifying code:', error)
+      return false
     }
-    return false
   }
 
   const logout = () => {

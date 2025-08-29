@@ -34,15 +34,20 @@ export default function LoginPage() {
     }
   }
 
-  const handleVerifyCode = (e: React.FormEvent) => {
+  const handleVerifyCode = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
     setInfo("")
-    const success = verifyLoginCode(email, code)
-    if (success) {
-      router.push("/admin")
-    } else {
-      setError("Kode yinjiza siyo cyangwa yararenze igihe")
+    
+    try {
+      const success = await verifyLoginCode(email, code)
+      if (success) {
+        router.push("/admin")
+      } else {
+        setError("Kode yinjiza siyo cyangwa yararenze igihe")
+      }
+    } catch (error) {
+      setError("Hari ikibazo cyo kwinjira. Ongera ugerageze.")
     }
   }
 
