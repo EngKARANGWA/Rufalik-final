@@ -18,19 +18,28 @@ export default function LoginPage() {
   const [code, setCode] = useState("")
   const [error, setError] = useState("")
   const [info, setInfo] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const { sendLoginCode, verifyLoginCode } = useAuth()
   const router = useRouter()
 
-  const handleSendCode = (e: React.FormEvent) => {
+  const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
     setInfo("")
-    const sent = sendLoginCode(email)
-    if (sent) {
-      setStep(2)
-      setInfo("Kode yo kwinjira yoherejwe kuri email (reba console)")
-    } else {
-      setError("Email ntikwiye cyangwa ntabwo wemerewe kwinjira")
+    setIsLoading(true)
+    
+    try {
+      const sent = await sendLoginCode(email)
+      if (sent) {
+        setStep(2)
+        setInfo("Kode yo kwinjira yoherejwe kuri email yawe")
+      } else {
+        setError("Email ntikwiye cyangwa ntabwo wemerewe kwinjira")
+      }
+    } catch (error) {
+      setError("Hari ikibazo cyo kohereza kode. Ongera ugerageze.")
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -38,6 +47,7 @@ export default function LoginPage() {
     e.preventDefault()
     setError("")
     setInfo("")
+    setIsLoading(true)
     
     try {
       const success = await verifyLoginCode(email, code)
@@ -48,6 +58,8 @@ export default function LoginPage() {
       }
     } catch (error) {
       setError("Hari ikibazo cyo kwinjira. Ongera ugerageze.")
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -88,8 +100,8 @@ export default function LoginPage() {
                       />
                     </div>
                   </div>
-                  <Button type="submit" className="w-full">
-                    Ohereza Kode
+                  <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? "Kohereza..." : "Ohereza Kode"}
                   </Button>
                 </form>
               )}
@@ -117,8 +129,8 @@ export default function LoginPage() {
                       />
                     </div>
                   </div>
-                  <Button type="submit" className="w-full">
-                    Kwinjira
+                  <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? "Kwinjira..." : "Kwinjira"}
                   </Button>
                   <Button type="button" variant="ghost" className="w-full" onClick={() => { setStep(1); setCode(""); setInfo(""); setError("") }}>
                     Subira inyuma

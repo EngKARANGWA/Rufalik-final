@@ -3,14 +3,16 @@
 import type React from "react"
 
 import { createContext, useContext, useState, useEffect } from "react"
+import { auth, type User } from "@/lib/api-client"
 
 interface AuthContextType {
   isAuthenticated: boolean
   isAdmin: boolean
-  user: { username: string; role: string } | null
-  sendLoginCode: (email: string) => boolean
+  user: User | null
+  sendLoginCode: (email: string) => Promise<boolean>
   verifyLoginCode: (email: string, code: string) => Promise<boolean>
   logout: () => void
+  loading: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -18,65 +20,59 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
-  const [user, setUser] = useState<{ username: string; role: string } | null>(null)
-  const [loginCode, setLoginCode] = useState<string | null>(null)
-  const [codeSentAt, setCodeSentAt] = useState<number | null>(null)
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Check if user is logged in from localStorage
-    const savedUser = localStorage.getItem("rugalika_user")
-    if (savedUser) {
-      const userData = JSON.parse(savedUser)
-      setUser(userData)
-      setIsAuthenticated(true)
-      setIsAdmin(userData.role === "admin")
+    const initAuth = async () => {
+      try {
+        // Check if there's a valid token and validate it
+        const response = await auth.validateToken()
+        if (response.success) {
+          // Get current user data
+          const userResponse = await auth.getCurrentUser()
+          if (userResponse.success && userResponse.data) {
+            setUser(userResponse.data)
+            setIsAuthenticated(true)
+            setIsAdmin(userResponse.data.role === "admin")
+          }
+        }
+      } catch (error) {
+        console.log("No valid authentication found")
+        // Clear any invalid tokens
+        await auth.logout()
+      } finally {
+        setLoading(false)
+      }
     }
+
+    initAuth()
   }, [])
 
-  // Generate a 6-digit code
-  const generateCode = () => Math.floor(100000 + Math.random() * 900000).toString()
-
-  // Simulate sending code to email (in production, use email service)
-  const sendLoginCode = (email: string): boolean => {
-    if (email === "karangwacyrille@gmail.com") {
-      const code = generateCode()
-      setLoginCode(code)
-      setCodeSentAt(Date.now())
-      // Simulate sending email (replace with real email logic)
-      // For now, just log the code
-      console.log(`Login code for admin: ${code}`)
-      return true
+  // Send login code using backend API
+  const sendLoginCode = async (email: string): Promise<boolean> => {
+    try {
+      const response = await auth.sendCode(email)
+      return response.success
+    } catch (error) {
+      console.error("Error sending login code:", error)
+      return false
     }
-    return false
   }
 
-  // Verify the code entered by the user
+  // Verify the code entered by the user using backend API
   const verifyLoginCode = async (email: string, code: string): Promise<boolean> => {
     try {
-      const response = await fetch('/api/auth/verify-otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          code: code  // Using 'code' instead of 'otp' as expected by backend
-        }),
-      })
-
-      const data = await response.json()
-
-      if (data.success) {
-        const userData = { username: "Admin", role: "admin" }
+      const response = await auth.verifyCode(email, code)
+      
+      if (response.success && response.data) {
+        const { user: userData } = response.data
         setUser(userData)
         setIsAuthenticated(true)
-        setIsAdmin(true)
-        localStorage.setItem("rugalika_user", JSON.stringify(userData))
-        setLoginCode(null)
-        setCodeSentAt(null)
+        setIsAdmin(userData.role === "admin")
         return true
       } else {
-        console.error('Verification failed:', data.message)
+        console.error('Verification failed:', response.message)
         return false
       }
     } catch (error) {
@@ -85,17 +81,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const logout = () => {
-    setUser(null)
-    setIsAuthenticated(false)
-    setIsAdmin(false)
-    localStorage.removeItem("rugalika_user")
-    setLoginCode(null)
-    setCodeSentAt(null)
+  const logout = async () => {
+    try {
+      await auth.logout()
+    } catch (error) {
+      console.error("Error during logout:", error)
+    } finally {
+      setUser(null)
+      setIsAuthenticated(false)
+      setIsAdmin(false)
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isAdmin, user, sendLoginCode, verifyLoginCode, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ isAuthenticated, isAdmin, user, sendLoginCode, verifyLoginCode, logout, loading }}>{children}</AuthContext.Provider>
   )
 }
 
